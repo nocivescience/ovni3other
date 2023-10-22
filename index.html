@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+</style>
+<body>
+    <canvas id="game" class="game"></canvas>
+    <script>
+        const game=document.getElementById("game");
+        const ctx=game.getContext("2d");
+        game.width=window.innerWidth;
+        game.height=window.innerHeight;
+        let frames=0;
+        class Background{
+            constructor(){
+                this.x=0;
+                this.y=0;
+                this.width=game.width;
+                this.height=game.height;
+                this.image=new Image();
+                this.image.src="./images/background.png";
+            }
+            draw(){
+                this.x--;
+                if(this.x< -this.width) this.x=0;
+                ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
+                ctx.drawImage(this.image,this.x+this.width,this.y,this.width,this.height);
+            }
+        }
+        class Trees{
+            constructor(){
+                this.trees=[];
+                this.x= game.width+10;
+                this.y=game.height-600;
+                for (let i of [1, 2, 3, 4]){
+                    let tree=new Image();
+                    tree.src=`./images/tree${i}.png`;
+                    this.trees.push(tree);
+                }
+                this.tree=this.trees[Math.floor(Math.random()*this.trees.length)];
+            }
+            draw(){
+                this.x-=10;
+                if(this.x< -this.tree.width) {
+                    this.x=game.width+10;
+                    this.tree=this.trees[Math.floor(Math.random()*this.trees.length)];
+                }
+                ctx.drawImage(this.tree,this.x,this.y);
+            }
+        }
+        class Player{
+            constructor(){
+                this.x=game.width/4;
+                this.y=game.height/2;
+                this.dx=0;
+                this.dy=0;
+                this.image=new Image();
+                this.image.src="./images/et.png";
+            }
+            draw(){
+                ctx.drawImage(this.image,this.x+=this.dx,this.y+=this.dy, 250,250);
+            }
+        }
+        const background=new Background();
+        const trees=new Trees();
+        const player=new Player();
+        function keyDown(e){
+            switch(e.key){
+                case "a":
+                    player.dx=-14;
+                    if(player.x<140) player.dx=0;
+                    break;
+                case "d":
+                    player.dx=14;
+                    if(player.x>game.width-200) player.dx=0;
+                    break;
+                case "w":
+                    player.dy=-14;
+                    if(player.y<0) player.dy=0;
+                    break;
+                case "s":
+                    player.dy=14;
+                    if(player.y>game.height-300) player.dy=0;
+                    break;
+            }
+        }
+        function keyUp(e){
+            switch(e.key){
+                case "a":
+                    player.dx=0;
+                    break;
+                case "d":
+                    player.dx=0;
+                    break;
+                case "w":
+                    player.dy=0;
+                    break;
+                case "s":
+                    player.dy=0;
+                    break;
+            }
+        }
+        const update=()=>{
+            ctx.clearRect(0,0,game.width,game.height);
+            background.draw();
+            trees.draw();
+            player.draw();
+            console.log(background.x);
+            window.requestAnimationFrame(update);
+        }
+        update();
+        document.addEventListener("keydown",keyDown);
+        document.addEventListener("keyup",keyUp);
+    </script>
+</body>
+</html>
