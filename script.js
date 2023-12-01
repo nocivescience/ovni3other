@@ -11,6 +11,21 @@ moonAudio.src='./sounds/moon.mp3';
 shootAudio.src='./sounds/shot.mp3';
 impactAudio.src='./sounds/impact.mp3';
 gameOverAudio.src='./sounds/game-over.mp3';
+const titulo=document.getElementById('titulo');
+const colores = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'white'];
+const letras = titulo.textContent.split('');
+function tituloColor(){
+    titulo.innerHTML = letras
+        .map(
+            letra =>
+                `<span style="color:${
+                    colores[Math.floor(Math.random() * colores.length)]
+                }">${letra}</span>`
+        )
+        .join('');
+};
+tituloColor();
+setInterval(tituloColor, 1000);
 class Background{
     constructor(){
         this.x=0;

@@ -6,6 +6,7 @@
     <title>Document</title>
 </head>
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
     *{
         box-sizing: border-box;
     }
@@ -13,13 +14,29 @@
         overflow: hidden;
         margin: 0;
         padding: 0;
+        font-family: 'Press Start 2P', cursive;
+        /* position: relative; */
+    }
+    #titulo{
+        position: absolute;
     }
 </style>
 <body>
+    <h1 id="titulo">E.T. Games</h1>
     <canvas id="game" class="game"></canvas>
     <script>
         const game=document.getElementById("game");
         const ctx=game.getContext("2d");
+        const tituloElement=document.getElementById("titulo");
+        const letras= tituloElement.textContent.split("");
+        const colores=["red","blue","green","yellow","orange","purple","pink","white","black"];
+        function titulo(){
+            tituloElement.innerHTML= letras
+            .map((letra)=> `<span style= "color: ${colores[Math.floor(Math.random()*colores.length)]}">${letra}</span>`
+            ).join("");
+        }
+        titulo();
+        setInterval(titulo,1000);
         game.width=window.innerWidth;
         game.height=window.innerHeight;
         let frames=0;
